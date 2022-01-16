@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>店舗検索アプリ｜ホットペッパー Webサービス</title>
+    <!-- Google Fonts Noto Sans Japaneseより引用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+      rel="stylesheet"
+    />
+    <!-- ここまで -->
+    <style>
+      * {
+        margin: 0;
+      }
+
+      body {
+        background-color: #f5f3ed;
+        color: #464a51;
+        font-family: 'Noto Sans JP', sans-serif;
+      }
+
+      .search {
+        text-align: center;
+      }
+
+      .search label {
+        font-size: 20px;
+      }
+
+      .search input {
+        font-size: 16px;
+        padding-left: 10px;
+        width: 200px;
+        height: 26px;
+      }
+
+      .search button {
+        cursor: pointer;
+        font-size: 16px;
+        padding: 2px;
+        width: 80px;
+      }
+
+      .restaurant {
+        display: grid;
+        grid-template-columns: 260px 640px;
+        justify-content: center;
+        margin: 46px auto;
+      }
+
+      .restaurant img {
+        margin-left: 50px;
+      }
+
+      .restaurant p:first-child {
+        font-weight: bolder;
+      }
+
+      .restaurant span {
+        color: #c1687d;
+      }
+
+      .restaurant h2 {
+        letter-spacing: 0.05em;
+        margin-bottom: 5px;
+      }
+
+      .overview span {
+        color: #d38878;
+      }
+
+      table {
+        border-top: solid 1px #464a51;
+        border-right: solid 1px #464a51;
+        /* ｢table内のborder（罫線）の太さがバラバラになるバグ｜Chrome｣ を参照 */
+        border-collapse: separate;
+        border-spacing: 0;
+        /* ここまで */
+        margin-top: 5px;
+        text-align: center;
+      }
+
+      td {
+        border-bottom: solid 1px #464a51;
+        border-left: solid 1px #464a51;
+        padding: 5px 10px;
+        width: 70px;
+      }
+
+      footer {
+        color: #7f8287;
+        font-size: 14px;
+        line-height: 2em;
+        margin-bottom: 50px;
+        text-align: center;
+      }
+
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body v-cloak>
+    <!-- ホットペッパー Webサービス クレジットのHTMLソース-->
+    <a href="http://webservice.recruit.co.jp/"
+      ><img
+        src="http://webservice.recruit.co.jp/banner/hotpepper-s.gif"
+        alt="ホットペッパー Webサービス"
+        width="135"
+        height="17"
+        border="0"
+        title="ホットペッパー Webサービス"
+    /></a>
+    <!-- ここまで -->
+    <div class="search">
+      <label> 店舗名 <input v-model="zipcode" /> </label>
+      <button @click="getResource">検索</button>
+    </div>
+    <div v-if="data">
+      <div v-for="htpp in data" class="restaurant">
+        <img :src="htpp.photo.pc.m" />
+        <div>
+          <p><span>{{htpp.genre.name}}</span>　{{htpp.catch}}</p>
+          <h2>{{htpp.name}}</h2>
+          <p class="overview">
+            <span>営業時間</span>　{{htpp.open}}<br />
+            <span>定休日　</span>　{{htpp.close}}<br />
+            <span>平均予算</span>　{{htpp.budget.average}}<br />
+            <span>アクセス</span>　{{htpp.access}}
+          </p>
+          <table>
+            <tr>
+              <td>コース</td>
+              <td>飲み放題</td>
+              <td>食べ放題</td>
+              <td>個室</td>
+              <td>カード</td>
+              <td>駐車場</td>
+            </tr>
+            <tr>
+              <!-- ｢【JavaScript入門】すぐわかる！includesメソッドを徹底解説｣を参照 -->
+              <td>{{htpp.course.includes("あり") ? "○":"×"}}</td>
+              <td>{{htpp.free_drink.includes("あり") ? "○":"×"}}</td>
+              <td>{{htpp.free_food.includes("あり") ? "○":"×"}}</td>
+              <td>{{htpp.private_room.includes("あり") ? "○":"×"}}</td>
+              <td>{{htpp.card.includes("利用可") ? "○":"×"}}</td>
+              <td>{{htpp.parking.includes("あり") ? "○":"×"}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <footer>
+        <p>
+          画像提供：ホットペッパー グルメ<br />
+          ＠yuria-ugok
+        </p>
+      </footer>
+    </div>
+
+    <script src="https://unpkg.com/petite-vue"></script>
+    <script src="/public/script.js"></script>
+  </body>
+</html>
